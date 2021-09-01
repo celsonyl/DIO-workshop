@@ -1,6 +1,5 @@
 ﻿using System;
 using DIO_workshop.Entities;
-using DIO_workshop.Enums;
 
 namespace DIO_workshop
 {
@@ -52,28 +51,42 @@ namespace DIO_workshop
         private static void ExcluirUser()
         {
             Console.WriteLine("Digite o ID que deseja remover");
-            int x = int.Parse(Console.ReadLine());
+            int id = int.Parse(Console.ReadLine());
 
-            userRepository.ExcluirUser(x);
+            userRepository.ExcluirUser(id);
         }
 
         private static void Comprar()
         {
+            userRepository.criaProduto();
             Console.WriteLine("Digite o ID da pessoa que quer comprar");
             int id = int.Parse(Console.ReadLine());
 
             var user = userRepository.EncontraUser(id);
-            if (user.RetornaId() == 0)
+            if (user.RetornaNome() == "")
             {
                 Console.WriteLine("Usuario não existe!");
                 return;
             }
-            Console.WriteLine("Escolha algum produto");
 
-            foreach(int j in Enum.GetValues(typeof(Produtos)))
+            var products = userRepository.mostrarProdutos();
+            Console.WriteLine("Escolha algum produto");
+            foreach(var x in products)
             {
-                Console.WriteLine("{0} - {1}", j, Enum.GetName(typeof(Produtos), j));
+                Console.WriteLine(x.ToString());
             }
+
+            Console.Write("Digite o Id do produto que deseja comprar!");
+            int cod = int.Parse(Console.ReadLine());
+            var product = userRepository.retornaProduto(cod);
+
+            var comprar = user.comprarProduto(product);
+            if(comprar == false)
+            {
+                Console.WriteLine("Saldo insuficiente!");
+                return;
+            }
+            Console.WriteLine("Produto comprado com sucesso!");
         }
 
         private static void AdicionarSaldo()
@@ -82,7 +95,7 @@ namespace DIO_workshop
             int id = int.Parse(Console.ReadLine());
 
             var user = userRepository.EncontraUser(id);
-            if(user.RetornaId() == 0)
+            if(user.RetornaNome() == "")
             {
                 Console.WriteLine("Usuario não existe!");
                 return;

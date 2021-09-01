@@ -12,6 +12,7 @@ namespace DIO_workshop.Entities
         private String Name { get; set; }
         private String Cpf { get; set; }
         private Double Saldo { get; set; }
+        private List<Product> List = new List<Product>();
 
         public User() { }
 
@@ -36,12 +37,33 @@ namespace DIO_workshop.Entities
             imprime += "Nome: " + Name + Environment.NewLine;
             imprime += "CPF: " + Cpf + Environment.NewLine;
             imprime += "Saldo: " + Saldo + Environment.NewLine;
+            imprime += "Produtos:" + Environment.NewLine;
+            foreach (var obj in List)
+            {
+                imprime += obj.ToString();
+            }
             return imprime;
+        }
+
+        public String RetornaNome()
+        {
+            return Name;
         }
 
         public int RetornaId()
         {
             return Id;
+        }
+
+        public bool comprarProduto(Product obj)
+        {
+            Saldo -= obj.price();
+            if(Saldo < 0)
+            {
+                return false;
+            }
+            List.Add(obj);
+            return true;
         }
     }
 }

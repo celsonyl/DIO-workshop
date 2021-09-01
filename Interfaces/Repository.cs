@@ -11,7 +11,6 @@ namespace DIO_workshop.Interfaces
         List<T> ListarDados();
         void InsereUser(T obj);
         void ExcluirUser(int id);
-        void AtualizarDados(T obj);
         T EncontraUser(int id);
     }
 }
